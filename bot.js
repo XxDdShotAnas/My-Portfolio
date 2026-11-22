@@ -178,12 +178,27 @@ client.on('interactionCreate', async (interaction) => {
 
   if (action === 'accept' || action === 'reject') {
     order.status = action === 'accept' ? 'accepted' : 'rejected';
+    order.updatedAt = new Date().toISOString();
+    order.updatedBy = interaction.user.id;
     writeOrders(orders);
+
+    let roleAssigned = false;
+    if (action === 'accept' && process.env.CLIENT_ROLE_ID && interaction.guild) {
+      try {
+        const member = await interaction.guild.members.fetch(order.userId).catch(() => null);
+        if (member) {
+          await member.roles.add(process.env.CLIENT_ROLE_ID);
+          roleAssigned = true;
+        }
+      } catch (err) {
+        console.error('Failed to assign CLIENT_ROLE_ID:', err.message);
+      }
+    }
 
     const updatedPayload = buildOrderMessage(order);
     updatedPayload.embeds[0].addFields({
       name: '🛡️ تم التحديث بواسطة',
-      value: `<@${interaction.user.id}>`,
+      value: `<@${interaction.user.id}>${roleAssigned ? `\n🏷️ تم منح رتبة العميل <@&${process.env.CLIENT_ROLE_ID}>` : ''}`,
       inline: false,
     });
 
