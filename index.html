@@ -92,8 +92,9 @@
         const PORTFOLIO_CONFIG = {
             developerName: "Anas",
             brandName: "Anas.dev",
-            discordUsername: "_a7nx", // <-- CHANGE TO YOUR REAL DISCORD USERNAME
-            discordUserId: "1139228323633954916", // <-- OPTIONAL: YOUR DISCORD ID
+            discordUsername: "_a7nx",
+            discordUserId: "1139228323633954916",
+            WEBHOOK_URL: "https://discord.com/api/webhooks/1574103393981567008/bDY84azjCIJVDwpE1xDTy6C9xnhYbBaE6Sr8HVcHWMO3oMMcdKPj3s8nQ7vEYf0UzcUk",
             pricing: {
                 starter: "$12",
                 pro: "$30",
@@ -354,7 +355,7 @@
                             <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-blurple mt-1"></i> <span data-i18n="t1_f4">Delivery in 1–2 days</span></li>
                         </ul>
                     </div>
-                    <button onclick="selectPackage('Starter Bot ($10-$15)')" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm transition-all cursor-pointer" data-i18n="btn_select_pkg">
+                    <button onclick="selectPackage('Starter Bot ($12)')" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm transition-all cursor-pointer" data-i18n="btn_select_pkg">
                         Select Starter
                     </button>
                 </div>
@@ -381,7 +382,7 @@
                             <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i> <span data-i18n="t2_f5">7 days priority bug-fix support</span></li>
                         </ul>
                     </div>
-                    <button onclick="selectPackage('Pro Server System ($12-$50+)')" class="w-full py-3.5 rounded-xl bg-blurple hover:bg-blurpleHover text-white font-bold text-sm shadow-lg shadow-blurple/30 transition-all cursor-pointer" data-i18n="btn_select_pro">
+                    <button onclick="selectPackage('Pro Server System ($30)')" class="w-full py-3.5 rounded-xl bg-blurple hover:bg-blurpleHover text-white font-bold text-sm shadow-lg shadow-blurple/30 transition-all cursor-pointer" data-i18n="btn_select_pro">
                         Order Pro System
                     </button>
                 </div>
@@ -451,81 +452,107 @@
         <div class="bg-cardDark border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
             <div class="text-center max-w-xl mx-auto mb-10">
                 <span class="text-emerald-400 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider" data-i18n="ord_eyebrow">// Ready to Start?</span>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1 mb-2" data-i18n="ord_title">Build Your Bot Order</h2>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-1 mb-2" data-i18n="ord_title">Build & Send Your Bot Order</h2>
                 <p class="text-gray-400 text-sm" data-i18n="ord_desc">
-                    Select the features you want below to generate a ready-to-send order brief, then paste it directly in my Discord DMs.
+                    Fill in your Discord username, select your package & features, and send your order directly to my server.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <!-- Form Controls -->
+                <!-- Left Form Inputs (7 Cols) -->
                 <div class="lg:col-span-7 space-y-5">
+                    <!-- Client Discord Username -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2" data-i18n="lbl_pkg">1. Select Package / Bot Type</label>
-                        <select id="order-package" onchange="updateOrderPreview()" class="w-full bg-[#0b0e14] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blurple">
-                            <option value="Starter Bot ($10-$15)">Starter Utility Bot ($10–$15)</option>
-                            <option value="Pro Server System ($12-$50+)" selected>Pro Server System ($25–$40)</option>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2" data-i18n="lbl_discord">
+                            Your Discord Username <span class="text-rose-400">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-3.5 flex items-center text-blurple">
+                                <i class="fa-brands fa-discord"></i>
+                            </span>
+                            <input type="text" id="client-discord" placeholder="e.g. your_username" oninput="updateOrderPreview()"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b0e14] border border-white/10 focus:border-blurple focus:outline-none text-white text-sm font-mono transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Package Selection -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2" data-i18n="lbl_pkg">
+                            Select Package
+                        </label>
+                        <select id="order-package" onchange="updateOrderPreview()"
+                            class="w-full px-4 py-3 rounded-xl bg-[#0b0e14] border border-white/10 focus:border-blurple focus:outline-none text-white text-sm transition-colors">
+                            <option value="Starter Utility Bot ($12)">Starter Utility Bot ($12)</option>
+                            <option value="Pro Server System ($30)" selected>Pro Server System ($30)</option>
                             <option value="Custom / Game Queue Bot ($50+)">Custom / Game Queue Bot ($50+)</option>
                         </select>
                     </div>
 
+                    <!-- Add-on Features Checkboxes -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2" data-i18n="lbl_features">2. Needed Modules</label>
-                        <div class="grid grid-cols-2 gap-2.5 text-sm">
-                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 cursor-pointer hover:border-blurple/50">
-                                <input type="checkbox" value="Ticket System (Claim/Transcripts)" checked onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-chk">
-                                <span class="text-gray-200 text-xs sm:text-sm">Ticket System</span>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2" data-i18n="lbl_features">
+                            Included / Requested Features
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 hover:border-blurple/50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="Ticket Panel + Transcripts" checked onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-cb">
+                                <span class="text-gray-200" data-i18n="feat_tickets">Ticket Panel + Transcripts</span>
                             </label>
-                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 cursor-pointer hover:border-blurple/50">
-                                <input type="checkbox" value="Moderation & Logging" checked onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-chk">
-                                <span class="text-gray-200 text-xs sm:text-sm">Moderation & Logs</span>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 hover:border-blurple/50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="Moderation & Audit Logs" onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-cb">
+                                <span class="text-gray-200" data-i18n="feat_mod">Moderation & Audit Logs</span>
                             </label>
-                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 cursor-pointer hover:border-blurple/50">
-                                <input type="checkbox" value="SQLite / MongoDB Database" onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-chk">
-                                <span class="text-gray-200 text-xs sm:text-sm">Database Storage</span>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 hover:border-blurple/50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="SQLite / MongoDB Database" onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-cb">
+                                <span class="text-gray-200" data-i18n="feat_db">SQLite / MongoDB Database</span>
                             </label>
-                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 cursor-pointer hover:border-blurple/50">
-                                <input type="checkbox" value="Queue / Tier-Testing System" onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-chk">
-                                <span class="text-gray-200 text-xs sm:text-sm">Queue / Ranking</span>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 hover:border-blurple/50 cursor-pointer transition-colors">
+                                <input type="checkbox" value="Custom Queue / Economy" onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-cb">
+                                <span class="text-gray-200" data-i18n="feat_queue">Custom Queue / Economy</span>
                             </label>
                         </div>
                     </div>
 
+                    <!-- Project Notes -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2" data-i18n="lbl_notes">3. Custom Details / Idea</label>
-                        <textarea id="order-notes" rows="3" oninput="updateOrderPreview()" placeholder="Describe any specific commands, roles, or ideas you have..." class="w-full bg-[#0b0e14] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blurple"></textarea>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2" data-i18n="lbl_notes">
+                            Bot Details & Commands Needed
+                        </label>
+                        <textarea id="order-notes" rows="3" oninput="updateOrderPreview()" placeholder="Describe your server idea, commands, or special buttons you want..."
+                            class="w-full px-4 py-3 rounded-xl bg-[#0b0e14] border border-white/10 focus:border-blurple focus:outline-none text-white text-sm transition-colors"></textarea>
                     </div>
                 </div>
 
-                <!-- Generated Order Output & Direct Discord Card -->
-                <div class="lg:col-span-5 bg-[#0b0e14] border border-white/10 rounded-2xl p-5 flex flex-col justify-between">
+                <!-- Right Live Order Summary & Submit (5 Cols) -->
+                <div class="lg:col-span-5 bg-[#0b0e14] border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-6">
                     <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-mono text-gray-400 uppercase" data-i18n="lbl_summary">Generated Order Brief</span>
-                            <span class="text-[11px] font-mono text-emerald-400">Ready to Copy</span>
+                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+                            <span class="text-xs font-mono uppercase text-gray-400" data-i18n="sum_header">Live Order Summary</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-blurple/20 text-blurple text-xs font-mono">Instant Webhook</span>
                         </div>
-                        <pre id="order-output" class="bg-cardDark border border-white/5 rounded-xl p-3.5 text-xs font-mono text-gray-300 whitespace-pre-wrap leading-relaxed mb-4"></pre>
+                        <pre id="order-preview-box" class="text-xs font-mono text-gray-300 whitespace-pre-wrap leading-relaxed bg-[#131722] p-4 rounded-xl border border-white/5"></pre>
                     </div>
 
+                    <!-- Status Banner -->
+                    <div id="order-status" class="hidden p-3.5 rounded-xl text-xs font-semibold text-center"></div>
+
                     <div class="space-y-3">
-                        <button onclick="copyOrderSummary()" id="copy-order-btn" class="w-full py-3 rounded-xl bg-blurple hover:bg-blurpleHover text-white font-bold text-sm shadow-lg shadow-blurple/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
-                            <i class="fa-regular fa-copy"></i>
-                            <span data-i18n="btn_copy_order">Copy Order Brief</span>
+                        <button id="submit-order-btn" onclick="sendOrderToDiscord()"
+                            class="w-full py-3.5 px-5 rounded-xl bg-blurple hover:bg-blurpleHover text-white font-bold text-sm shadow-lg shadow-blurple/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span data-i18n="btn_send_order">Send Order Directly</span>
                         </button>
 
-                        <!-- Direct Discord Handle Box -->
-                        <div class="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-between">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-brands fa-discord text-blurple text-xl"></i>
-                                <div>
-                                    <div class="text-[11px] text-gray-400" data-i18n="dm_label">Send via Discord DM:</div>
-                                    <div class="text-sm font-mono font-bold text-white" id="display-discord-tag">anas.dev</div>
-                                </div>
-                            </div>
-                            <button onclick="copyDiscordTag()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-white transition-colors cursor-pointer" data-i18n="btn_copy_tag">
-                                Copy Tag
-                            </button>
-                        </div>
+                        <button onclick="copyOrderSummary()"
+                            class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-regular fa-copy"></i>
+                            <span data-i18n="btn_copy_order">Copy Summary (Backup)</span>
+                        </button>
+                    </div>
+
+                    <div class="pt-3 border-t border-white/5 text-center text-xs text-gray-400">
+                        <span data-i18n="dm_direct">Or DM me directly on Discord:</span>
+                        <span id="footer-discord-tag" class="text-white font-mono font-bold select-all ml-1">_a7nx</span>
                     </div>
                 </div>
             </div>
@@ -533,372 +560,259 @@
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 py-8 px-4 text-center text-xs text-gray-500">
-        <p>© <span id="year"></span> <span id="footer-brand" class="text-gray-300 font-semibold">Anas.dev</span> — Custom Discord Bot Development. Built with Node.js & Discord.js.</p>
+    <footer class="py-8 px-4 border-t border-white/5 text-center text-xs text-gray-500">
+        <p>© 2026 <span id="footer-brand" class="text-gray-300 font-semibold">Anas.dev</span> — Custom Discord Bot Development. Built with Node.js & Discord.js v14.</p>
     </footer>
 
-    <!-- =====================================================================
-         INTERACTIVE DISCORD EMBED DEMO MODAL
-         ===================================================================== -->
-    <div id="demo-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="bg-[#1e1f22] border border-white/10 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all">
-            <!-- Fake Discord Channel Header -->
-            <div class="bg-[#2b2d31] px-4 py-3 border-b border-black/30 flex items-center justify-between">
-                <div class="flex items-center gap-2 text-gray-200 font-semibold text-sm">
-                    <i class="fa-solid fa-hashtag text-gray-400"></i>
-                    <span id="demo-channel-name">ticket-support</span>
-                    <span class="ml-2 px-2 py-0.5 rounded bg-blurple text-[10px] font-bold uppercase text-white">Live Preview</span>
+    <!-- Interactive Discord Bot Demo Modal -->
+    <div id="demo-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+        <div class="bg-[#313338] border border-white/10 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl">
+            <!-- Modal Header -->
+            <div class="bg-[#2b2d31] px-5 py-3.5 flex items-center justify-between border-b border-black/30">
+                <div class="flex items-center gap-2 text-sm font-bold text-white">
+                    <span class="text-gray-400">#</span>
+                    <span id="demo-channel-name">bot-preview</span>
+                    <span class="ml-2 px-2 py-0.5 rounded bg-blurple text-[10px] uppercase tracking-wider">Live Preview</span>
                 </div>
-                <button onclick="closeDemoModal()" class="text-gray-400 hover:text-white w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center cursor-pointer">
-                    <i class="fa-solid fa-xmark"></i>
+                <button onclick="closeDemoModal()" class="text-gray-400 hover:text-white transition-colors cursor-pointer">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <!-- Fake Discord Chat Canvas -->
-            <div class="bg-discordBg p-5 space-y-4 text-left" dir="ltr">
-                <!-- Bot Message Row -->
-                <div class="flex items-start gap-3.5">
-                    <div class="w-10 h-10 rounded-full bg-blurple flex items-center justify-center text-white shrink-0 shadow">
-                        <i class="fa-brands fa-discord text-lg"></i>
+            <!-- Simulated Discord Message Area -->
+            <div class="p-5 space-y-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blurple flex items-center justify-center text-white font-bold shrink-0">
+                        <i class="fa-solid fa-robot"></i>
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
-                            <span id="demo-bot-name" class="font-semibold text-white text-sm">Nexus System</span>
-                            <span class="px-1.5 py-0.2 rounded bg-blurple text-[10px] font-bold text-white flex items-center gap-1">
-                                <i class="fa-solid fa-check text-[8px]"></i> APP
-                            </span>
-                            <span class="text-[11px] text-gray-400">Today at 7:30 PM</span>
+                            <span id="demo-bot-name" class="font-bold text-white text-sm">Nexus System</span>
+                            <span class="px-1.5 py-0.2 rounded bg-blurple text-[10px] font-bold text-white">APP</span>
+                            <span class="text-[11px] text-gray-400">Today at 8:00 PM</span>
                         </div>
 
-                        <!-- Discord Embed Card -->
-                        <div id="demo-embed-box" class="bg-discordEmbed border-l-4 border-blurple rounded-r-md p-3.5 max-w-md shadow-sm">
-                            <div id="demo-embed-title" class="font-bold text-white text-sm mb-1.5">Support Ticket #042</div>
-                            <div id="demo-embed-desc" class="text-gray-300 text-xs leading-relaxed whitespace-pre-line mb-3"></div>
-                            <div id="demo-embed-fields" class="grid grid-cols-2 gap-2 text-xs mb-2"></div>
-                            <div class="text-[10px] text-gray-400 pt-1 border-t border-white/5">Powered by Anas.dev • Discord.js v14</div>
+                        <!-- Discord Embed Simulation -->
+                        <div id="demo-embed-box" class="bg-[#2b2d31] border-l-4 border-blurple rounded-r-lg p-3.5 text-sm space-y-2">
+                            <div id="demo-embed-title" class="font-bold text-white">Support Ticket Panel</div>
+                            <div id="demo-embed-desc" class="text-gray-300 text-xs leading-relaxed">Click the button below to open a private support ticket.</div>
+                            <div id="demo-embed-status" class="text-xs font-mono text-emerald-400 pt-1"></div>
                         </div>
 
-                        <!-- Interactive Discord Action Row Buttons -->
-                        <div id="demo-buttons" class="flex flex-wrap gap-2 mt-2.5"></div>
-
-                        <!-- Interactive Feedback Toast inside simulated Discord -->
-                        <div id="demo-ephemeral" class="hidden mt-3 p-2.5 rounded bg-[#2b2d31] border border-white/10 text-xs text-gray-200 flex items-center gap-2">
-                            <i class="fa-solid fa-eye-slash text-gray-400"></i>
-                            <span id="demo-ephemeral-text"></span>
-                        </div>
+                        <!-- Interactive Discord Buttons -->
+                        <div id="demo-buttons-row" class="flex flex-wrap gap-2 mt-3"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2.5 px-4 py-3 rounded-xl bg-emerald-600 text-white text-sm font-semibold shadow-xl">
-        <i class="fa-solid fa-circle-check"></i>
-        <span id="toast-msg">Copied to clipboard!</span>
-    </div>
-
+    <!-- Main JavaScript Logic -->
     <script>
-        // Initialize dynamic config values
-        document.getElementById('year').textContent = new Date().getFullYear();
-        document.getElementById('nav-brand').innerHTML = `${PORTFOLIO_CONFIG.developerName}<span class="text-blurple">.dev</span>`;
-        document.getElementById('footer-brand').textContent = PORTFOLIO_CONFIG.brandName;
-        document.getElementById('display-discord-tag').textContent = PORTFOLIO_CONFIG.discordUsername;
-        document.getElementById('price-starter').textContent = PORTFOLIO_CONFIG.pricing.starter;
-        document.getElementById('price-pro').textContent = PORTFOLIO_CONFIG.pricing.pro;
-        document.getElementById('price-custom').textContent = PORTFOLIO_CONFIG.pricing.custom;
+        // Initialize Config Values
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("footer-discord-tag").textContent = PORTFOLIO_CONFIG.discordUsername;
+            document.getElementById("footer-brand").textContent = PORTFOLIO_CONFIG.brandName;
+            document.getElementById("price-starter").textContent = PORTFOLIO_CONFIG.pricing.starter;
+            document.getElementById("price-pro").textContent = PORTFOLIO_CONFIG.pricing.pro;
+            document.getElementById("price-custom").textContent = PORTFOLIO_CONFIG.pricing.custom;
+            updateOrderPreview();
+        });
 
-        // =================================================================
-        // INTERACTIVE DISCORD BOT DEMO ENGINE
-        // =================================================================
-        let ticketClaimed = false;
-        let queueCount = 3;
+        // Select Package from Pricing Cards
+        function selectPackage(pkgName) {
+            const selectEl = document.getElementById("order-package");
+            for (let i = 0; i < selectEl.options.length; i++) {
+                if (selectEl.options[i].value.includes(pkgName.split(" ")[0])) {
+                    selectEl.selectedIndex = i;
+                    break;
+                }
+            }
+            updateOrderPreview();
+            document.getElementById("order").scrollIntoView({ behavior: "smooth" });
+        }
 
+        // Build Live Order Text
+        function getOrderData() {
+            const clientDiscord = document.getElementById("client-discord").value.trim();
+            const pkg = document.getElementById("order-package").value;
+            const notes = document.getElementById("order-notes").value.trim() || "No extra notes provided.";
+            const features = Array.from(document.querySelectorAll(".feature-cb:checked")).map(cb => cb.value);
+
+            const priceMatch = pkg.match(/\(([^)]+)\)/);
+            const estimatedPrice = priceMatch ? priceMatch[1] : "Custom";
+
+            return { clientDiscord, pkg, estimatedPrice, features, notes };
+        }
+
+        function updateOrderPreview() {
+            const { clientDiscord, pkg, features, notes } = getOrderData();
+            const summary =
+`👤 Client: ${clientDiscord || "[Enter Discord Username]"}
+📦 Package: ${pkg}
+⚙️ Features: ${features.length ? features.join(", ") : "Standard"}
+📝 Details: ${notes}`;
+            document.getElementById("order-preview-box").textContent = summary;
+        }
+
+        // Send Order Directly to Discord Webhook (Matches index.js Bot Parser)
+        async function sendOrderToDiscord() {
+            const { clientDiscord, pkg, estimatedPrice, features, notes } = getOrderData();
+            const statusEl = document.getElementById("order-status");
+            const btn = document.getElementById("submit-order-btn");
+
+            if (!clientDiscord) {
+                statusEl.className = "p-3.5 rounded-xl text-xs font-semibold text-center bg-rose-500/15 border border-rose-500/30 text-rose-300";
+                statusEl.textContent = currentLang === "ar"
+                    ? "⚠️ من فضلك اكتب يوزر الديسكورد الخاص بك أولاً!"
+                    : "⚠️ Please enter your Discord username first!";
+                statusEl.classList.remove("hidden");
+                document.getElementById("client-discord").focus();
+                return;
+            }
+
+            btn.disabled = true;
+            btn.classList.add("opacity-60", "cursor-not-allowed");
+
+            const webhookPayload = {
+                username: "Portfolio Order System",
+                embeds: [
+                    {
+                        title: "New Bot Commission Request",
+                        color: 5793266,
+                        description: `**Requested Features:**\n${features.length ? features.map(f => `• ${f}`).join("\n") : "• Standard Setup"}\n\n**Project Notes:**\n${notes}`,
+                        fields: [
+                            { name: "Discord User", value: clientDiscord, inline: true },
+                            { name: "Selected Plan", value: pkg, inline: true },
+                            { name: "Estimated Price", value: estimatedPrice, inline: true }
+                        ],
+                        timestamp: new Date().toISOString()
+                    }
+                ]
+            };
+
+            try {
+                const response = await fetch(PORTFOLIO_CONFIG.WEBHOOK_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(webhookPayload)
+                });
+
+                if (response.ok) {
+                    statusEl.className = "p-3.5 rounded-xl text-xs font-semibold text-center bg-emerald-500/15 border border-emerald-500/30 text-emerald-300";
+                    statusEl.textContent = currentLang === "ar"
+                        ? "✅ تم إرسال طلبك بنجاح! هتواصل معاك على الديسكورد قريباً."
+                        : "✅ Order sent successfully! I will message you on Discord shortly.";
+                    statusEl.classList.remove("hidden");
+                } else {
+                    throw new Error("Webhook request failed");
+                }
+            } catch (err) {
+                statusEl.className = "p-3.5 rounded-xl text-xs font-semibold text-center bg-rose-500/15 border border-rose-500/30 text-rose-300";
+                statusEl.textContent = currentLang === "ar"
+                    ? "❌ حدث خطأ أثناء الإرسال. انسخ الملخص وابعته لي مباشرة في الخاص."
+                    : "❌ Could not send automatically. Please copy the summary and DM me directly.";
+                statusEl.classList.remove("hidden");
+            } finally {
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.classList.remove("opacity-60", "cursor-not-allowed");
+                }, 5000);
+            }
+        }
+
+        // Copy Backup Summary
+        function copyOrderSummary() {
+            const text = document.getElementById("order-preview-box").textContent;
+            navigator.clipboard.writeText(text);
+            const statusEl = document.getElementById("order-status");
+            statusEl.className = "p-3.5 rounded-xl text-xs font-semibold text-center bg-blurple/20 border border-blurple/40 text-indigo-200";
+            statusEl.textContent = currentLang === "ar"
+                ? "📋 تم نسخ ملخص الطلب! ابعته لي في رسائل الديسكورد."
+                : "📋 Order summary copied! Paste it in my Discord DMs.";
+            statusEl.classList.remove("hidden");
+        }
+
+        // Interactive Bot Demo Modal Logic
         const DEMOS = {
             nexus: {
-                channel: "ticket-042",
-                botName: "Nexus All-in-One",
-                color: "#5865F2",
-                title: "🎫 Support Ticket — General Help",
-                desc: "Welcome <@User>! Support staff will be with you shortly.\nClick **Claim** below to assign yourself to this ticket.",
-                fields: [
-                    { name: "Status", value: "🟢 Open (Unclaimed)" },
-                    { name: "Transcript", value: "Auto-HTML Enabled" }
-                ],
-                renderButtons: () => `
-                    <button onclick="toggleClaimDemo()" class="px-3 py-1.5 rounded bg-discordGreen hover:opacity-90 text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer transition">
-                        <i class="fa-solid ${ticketClaimed ? 'fa-user-minus' : 'fa-hand'}"></i>
-                        ${ticketClaimed ? 'Unclaim' : 'Claim'}
-                    </button>
-                    <button onclick="triggerEphemeral('📄 Saved HTML transcript & archived #ticket-042 to #ticket-logs!')" class="px-3 py-1.5 rounded bg-discordRed hover:opacity-90 text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer transition">
-                        <i class="fa-solid fa-lock"></i> Close & Transcript
-                    </button>
-                `
+                channel: "ticket-panel",
+                bot: "Nexus System",
+                title: "🎫 Server Support & Orders",
+                desc: "Need help or want to place an order? Click below to open a ticket. Staff can Claim/Unclaim and save HTML transcripts.",
+                buttons: [
+                    { label: "Open Ticket", style: "bg-blurple", reply: "✅ Ticket #042 created! Staff notified." },
+                    { label: "Claim Ticket", style: "bg-discordGreen", reply: "🛡️ Ticket claimed by @Anas!" },
+                    { label: "Save Transcript", style: "bg-discordBtn", reply: "📄 transcript-042.html saved to #logs." }
+                ]
             },
             queue: {
-                channel: "tier-testing-queue",
-                botName: "TierQueue Bot",
-                color: "#f59e0b",
-                title: "⚔️ Competitive Tier Testing — Active Queue",
-                desc: "Click **Join Queue** to enter the matchmaking pool. Testers use `/pull` or `/next` to start matches.",
-                fields: [
-                    { name: "Players Waiting", value: `${queueCount} Players` },
-                    { name: "Active Testers", value: "2 Online" }
-                ],
-                renderButtons: () => `
-                    <button onclick="joinQueueDemo()" class="px-3 py-1.5 rounded bg-blurple hover:bg-blurpleHover text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer transition">
-                        <i class="fa-solid fa-plus"></i> Join Queue
-                    </button>
-                    <button onclick="triggerEphemeral('⚡ Pulled next player from SQLite queue into #testing-room-1!')" class="px-3 py-1.5 rounded bg-discordBtn hover:opacity-90 text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer transition">
-                        <i class="fa-solid fa-forward-step"></i> /next (Staff)
-                    </button>
-                `
+                channel: "tier-queue",
+                bot: "TierTest Queue Bot",
+                title: "⚔️ Competitive Matchmaking Queue",
+                desc: "Active Gamemode: Crystal / Sword\nPlayers in Queue: 4 | Testers Online: 2",
+                buttons: [
+                    { label: "Join Queue", style: "bg-discordGreen", reply: "✅ Added to queue at position #5!" },
+                    { label: "Pull Next (/pull)", style: "bg-blurple", reply: "🎯 Pulled next player into private testing channel!" }
+                ]
             },
             astral: {
-                channel: "open-a-ticket",
-                botName: "Astral Support",
-                color: "#a855f7",
-                title: "✨ Need Assistance? Open a Ticket",
-                desc: "Select a department below to open a private support channel with our team.",
-                fields: [
-                    { name: "Average Response", value: "< 5 Minutes" },
-                    { name: "Departments", value: "Billing • Support • Reports" }
-                ],
-                renderButtons: () => `
-                    <button onclick="triggerEphemeral('📝 Opened Modal Form: [Describe your issue] -> Created #billing-user!')" class="px-3 py-1.5 rounded bg-blurple hover:bg-blurpleHover text-white text-xs font-medium cursor-pointer transition">
-                        💳 Billing & Orders
-                    </button>
-                    <button onclick="triggerEphemeral('🛠️ Created private channel #support-user and pinged @Support!')" class="px-3 py-1.5 rounded bg-discordBtn hover:opacity-90 text-white text-xs font-medium cursor-pointer transition">
-                        🛠️ Technical Help
-                    </button>
-                `
+                channel: "support-center",
+                bot: "Astral Tickets",
+                title: "📩 Multi-Department Ticket Router",
+                desc: "Select a department to fill out the pre-ticket modal form and connect with the right team.",
+                buttons: [
+                    { label: "Billing Support", style: "bg-blurple", reply: "📝 Opened Billing Modal & routed to @BillingTeam." },
+                    { label: "Report User", style: "bg-discordRed", reply: "🚨 High-priority report ticket created." }
+                ]
             },
             lexus: {
-                channel: "invite-logs",
-                botName: "Lexus Community",
-                color: "#0ea5e9",
-                title: "📈 New Member Joined!",
-                desc: "Welcome **@Alex** to the server! Invited by **@Anas**.",
-                fields: [
-                    { name: "Total Invites", value: "24 Valid Invites" },
-                    { name: "Milestone Role", value: "Unlocked @Top Inviter" }
-                ],
-                renderButtons: () => `
-                    <button onclick="triggerEphemeral('🏆 Leaderboard: 1. @Anas (24) • 2. @Omar (18) • 3. @Ziad (11)')" class="px-3 py-1.5 rounded bg-discordBtn hover:opacity-90 text-white text-xs font-medium cursor-pointer transition">
-                        🏆 View Leaderboard
-                    </button>
-                `
+                channel: "invites-leaderboard",
+                bot: "Lexus Community",
+                title: "🏆 Top Inviters Leaderboard",
+                desc: "1. @Anas — 48 valid invites\n2. @Alex — 31 valid invites\n3. @Sam — 19 valid invites",
+                buttons: [
+                    { label: "Check My Invites", style: "bg-blurple", reply: "📊 You have 12 real invites (0 fake, 1 left)." },
+                    { label: "Claim Reward Role", style: "bg-discordGreen", reply: "🎉 Unlocked @TopSupporter role!" }
+                ]
             }
         };
 
-        let currentDemoKey = 'nexus';
-
         function openDemoModal(key) {
-            currentDemoKey = key;
-            ticketClaimed = false;
-            queueCount = 3;
-            renderDemoState();
-            const modal = document.getElementById('demo-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            const d = DEMOS[key];
+            if (!d) return;
+            document.getElementById("demo-channel-name").textContent = d.channel;
+            document.getElementById("demo-bot-name").textContent = d.bot;
+            document.getElementById("demo-embed-title").textContent = d.title;
+            document.getElementById("demo-embed-desc").innerText = d.desc;
+            document.getElementById("demo-embed-status").textContent = "";
+
+            const btnRow = document.getElementById("demo-buttons-row");
+            btnRow.innerHTML = "";
+            d.buttons.forEach(b => {
+                const btn = document.createElement("button");
+                btn.className = `${b.style} hover:opacity-90 text-white text-xs font-semibold px-3.5 py-2 rounded transition-all cursor-pointer`;
+                btn.textContent = b.label;
+                btn.onclick = () => {
+                    document.getElementById("demo-embed-status").textContent = b.reply;
+                };
+                btnRow.appendChild(btn);
+            });
+
+            const modal = document.getElementById("demo-modal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
         }
 
         function closeDemoModal() {
-            const modal = document.getElementById('demo-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            document.getElementById('demo-ephemeral').classList.add('hidden');
+            const modal = document.getElementById("demo-modal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
         }
 
-        function renderDemoState() {
-            const d = DEMOS[currentDemoKey];
-            document.getElementById('demo-channel-name').textContent = d.channel;
-            document.getElementById('demo-bot-name').textContent = d.botName;
-            document.getElementById('demo-embed-box').style.borderLeftColor = d.color;
-            document.getElementById('demo-embed-title').textContent = d.title;
-            document.getElementById('demo-embed-desc').textContent = d.desc;
-
-            const fieldsContainer = document.getElementById('demo-embed-fields');
-            fieldsContainer.innerHTML = d.fields.map(f => `
-                <div class="bg-black/20 rounded p-2">
-                    <div class="text-[10px] font-bold text-gray-400 uppercase">${f.name}</div>
-                    <div class="text-xs text-gray-200 font-medium">${f.value}</div>
-                </div>
-            `).join('');
-
-            document.getElementById('demo-buttons').innerHTML = d.renderButtons();
-        }
-
-        function toggleClaimDemo() {
-            ticketClaimed = !ticketClaimed;
-            DEMOS.nexus.fields[0].value = ticketClaimed ? "🟡 Claimed by @Staff" : "🟢 Open (Unclaimed)";
-            renderDemoState();
-            triggerEphemeral(ticketClaimed ? "✅ You claimed this ticket! Button toggled to Unclaim." : "🔄 Ticket unclaimed and returned to queue.");
-        }
-
-        function joinQueueDemo() {
-            queueCount++;
-            DEMOS.queue.fields[0].value = `${queueCount} Players`;
-            renderDemoState();
-            triggerEphemeral(`✅ You joined the queue at position #${queueCount}!`);
-        }
-
-        function triggerEphemeral(msg) {
-            const box = document.getElementById('demo-ephemeral');
-            document.getElementById('demo-ephemeral-text').textContent = msg;
-            box.classList.remove('hidden');
-        }
-
-        // =================================================================
-        // ORDER BUILDER & CLIPBOARD HELPERS
-        // =================================================================
-        function updateOrderPreview() {
-            const pkg = document.getElementById('order-package').value;
-            const checked = Array.from(document.querySelectorAll('.feature-chk:checked')).map(c => `• ${c.value}`);
-            const notes = document.getElementById('order-notes').value.trim();
-
-            let summary = `🤖 NEW BOT ORDER REQUEST\n`;
-            summary += `------------------------\n`;
-            summary += `📦 Package: ${pkg}\n`;
-            summary += `⚙️ Modules:\n${checked.length ? checked.join('\n') : '• Custom Setup'}\n`;
-            if (notes) {
-                summary += `📝 Details: ${notes}\n`;
-            }
-            summary += `------------------------`;
-
-            document.getElementById('order-output').textContent = summary;
-        }
-
-        function selectPackage(pkgName) {
-            const select = document.getElementById('order-package');
-            select.value = pkgName;
-            updateOrderPreview();
-            document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function copyTextFallback(text, successMsg) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                showToast(successMsg);
-            } catch (err) {
-                showToast('Please copy the text manually.');
-            }
-            document.body.removeChild(textarea);
-        }
-
-        function copyOrderSummary() {
-            const text = document.getElementById('order-output').textContent;
-            copyTextFallback(text, `Order brief copied! Paste it in ${PORTFOLIO_CONFIG.discordUsername}'s DM.`);
-        }
-
-        function copyDiscordTag() {
-            copyTextFallback(PORTFOLIO_CONFIG.discordUsername, `Copied Discord tag: ${PORTFOLIO_CONFIG.discordUsername}`);
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = message;
-            toast.classList.remove('hidden');
-            toast.classList.add('flex');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-                toast.classList.remove('flex');
-            }, 3200);
-        }
-
-        // Initialize order preview on load
-        updateOrderPreview();
-
-        // =================================================================
-        // BILINGUAL ENGLISH / ARABIC SWITCHER
-        // =================================================================
-        let currentLang = 'en';
-
+        // Bilingual EN / AR Toggle
+        let currentLang = "en";
         const TRANSLATIONS = {
-            en: {
-                nav_projects: "Featured Bots",
-                nav_services: "Packages & Pricing",
-                nav_why: "Why Me",
-                nav_order: "Order Builder",
-                nav_cta: "Order a Bot",
-                hero_status: "Available for Custom Bot Commissions",
-                hero_title: 'Custom Discord Bots Built for <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#5865F2] via-[#8ea1e1] to-emerald-400">Speed, Scale & Clean Automation.</span>',
-                hero_subtitle: 'I build reliable, lag-free Discord bots using <span class="text-gray-200 font-mono text-sm">Node.js</span>, <span class="text-gray-200 font-mono text-sm">Discord.js v14</span>, and <span class="text-gray-200 font-mono text-sm">SQLite / MongoDB</span>—from advanced ticket panels to competitive queue systems.',
-                hero_btn_order: "Order Your Custom Bot",
-                hero_btn_work: "Explore Bot Demos",
-                proj_eyebrow: "// Portfolio Showcase",
-                proj_title: "Featured Bot Systems",
-                proj_desc: 'Click <span class="text-white font-semibold">"Interactive Demo"</span> on any bot card to test how its embeds and buttons look inside Discord.',
-                btn_demo: "Interactive Demo",
-                p1_title: "Nexus & Apex All-in-One System",
-                p1_desc: "Complete server management suite featuring interactive Ticket Panels with dynamic Claim/Unclaim button toggling, HTML transcripts, full moderation, and categorized audit logging.",
-                p1_f1: "Dynamic Claim / Unclaim staff workflow",
-                p1_f2: "Auto-saved HTML transcripts sent to logs",
-                p1_f3: "Ban, Kick, Timeout & Multi-channel Logging",
-                p2_title: "Competitive Tier-Testing & Queue Bot",
-                p2_desc: "SQLite-backed matchmaking and tier-testing system built for competitive gaming communities. Tracks player accounts, custom gamemode queues, and instant tester pulls.",
-                p2_f1: "Account linking & persistent SQLite profiles",
-                p2_f2: "Live queue embeds with custom gamemode icons",
-                p2_f3: "/queue, /pull, and /next slash commands",
-                p3_title: "Astral Multi-Department Ticket Bot",
-                p3_desc: "Clean support workflow using Select Menus and Modals so users submit structured details before opening a ticket, routing directly to the right staff role.",
-                p3_f1: "Dropdown categories (Billing, Support, Reports)",
-                p3_f2: "Pre-ticket form modal for fast issue resolution",
-                p3_f3: "One-click close, rename & user add/remove",
-                p4_title: "Lexus Community & Invite Tracker",
-                p4_desc: "Built for growing community servers to track real vs. fake invites, reward top inviters automatically, and welcome new members with custom embeds.",
-                p4_f1: "Accurate invite tracking & anti-fake detection",
-                p4_f2: "Interactive /invites leaderboard & auto-roles",
-                p4_f3: "Custom welcome cards & smart auto-responders",
-                price_eyebrow: "// Transparent Pricing",
-                price_title: "Bot Development Packages",
-                price_desc: "Flexible pricing tailored to your server's exact needs. Every package includes clean source code and setup guidance.",
-                price_starting: "starting at",
-                price_quote: "custom quote",
-                badge_popular: "Most Popular",
-                t1_name: "Starter Utility Bot",
-                t1_desc: "Ideal for new communities needing essential automation and clean slash commands.",
-                t1_f1: "Up to 6 custom Slash Commands",
-                t1_f2: "Custom Welcome & Auto-Role system",
-                t1_f3: "Basic message/member event logs",
-                t1_f4: "Delivery in 1–2 days",
-                btn_select_pkg: "Select Starter",
-                t2_name: "Pro Server System",
-                t2_desc: "Full-featured moderation, ticket panels, and persistent database storage for active servers.",
-                t2_f1: "Advanced Ticket Panel (Claim + HTML Transcripts)",
-                t2_f2: "Full Moderation Suite & Categorized Logs",
-                t2_f3: "SQLite or MongoDB Database Integration",
-                t2_f4: "Buttons, Dropdown Menus & Modals",
-                t2_f5: "7 days priority bug-fix support",
-                btn_select_pro: "Order Pro System",
-                t3_name: "Custom / Game Queue Bot",
-                t3_desc: "Tailored systems for gaming clans, tier-testing queues, economy, or external API integrations.",
-                t3_f1: "Matchmaking / Queue & Ranking Systems",
-                t3_f2: "External Game/Web API Integrations",
-                t3_f3: "Custom Multi-table Database Architecture",
-                t3_f4: "Full setup walkthrough & source code",
-                btn_select_custom: "Request Custom Quote",
-                w1_title: "Clean, Plug-and-Play Code",
-                w1_desc: "Well-structured Node.js code with an easy .env & config file so you can change tokens, channel IDs, and roles anytime without touching code.",
-                w2_title: "Live Demo Before Payment",
-                w2_desc: "Test your bot live on a private test server before final delivery so you can verify every command, button, and permission works smoothly.",
-                w3_title: "Fast Turnaround & Support",
-                w3_desc: "Clear communication from start to finish, fast delivery, and free post-delivery fixes if any bug pops up.",
-                ord_eyebrow: "// Ready to Start?",
-                ord_title: "Build Your Bot Order",
-                ord_desc: "Select the features you want below to generate a ready-to-send order brief, then paste it directly in my Discord DMs.",
-                lbl_pkg: "1. Select Package / Bot Type",
-                lbl_features: "2. Needed Modules",
-                lbl_notes: "3. Custom Details / Idea",
-                lbl_summary: "Generated Order Brief",
-                btn_copy_order: "Copy Order Brief",
-                dm_label: "Send via Discord DM:",
-                btn_copy_tag: "Copy Tag"
-            },
             ar: {
                 nav_projects: "أعمالي",
                 nav_services: "الباقات والأسعار",
@@ -906,92 +820,49 @@
                 nav_order: "اطلب بوت",
                 nav_cta: "اطلب بوت الآن",
                 hero_status: "متاح لاستقبال طلبات البوتات المخصصة",
-                hero_title: 'تطوير بوتات ديسكورد مخصصة <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#5865F2] via-[#8ea1e1] to-emerald-400">بأعلى سرعة وأداء مستقر.</span>',
-                hero_subtitle: 'أبرمج بوتات ديسكورد احترافية بدون لاق باستخدام <span class="text-gray-200 font-mono text-sm">Node.js</span> و <span class="text-gray-200 font-mono text-sm">Discord.js v14</span> وقواعد بيانات <span class="text-gray-200 font-mono text-sm">SQLite / MongoDB</span> من أنظمة التذاكر المتقدمة إلى بوتات الطوابير والألعاب.',
-                hero_btn_order: "اطلب بوتك المخصص",
-                hero_btn_work: "تجربة نماذج البوتات",
+                hero_title: "تطوير بوتات ديسكورد احترافية مصممة <span class='text-transparent bg-clip-text bg-gradient-to-r from-[#5865F2] via-[#8ea1e1] to-emerald-400'>للسرعة والأداء المستقر.</span>",
+                hero_subtitle: "أبني بوتات ديسكورد سريعة وخالية من اللاج باستخدام Node.js و Discord.js v14 وقواعد بيانات SQLite / MongoDB — من أنظمة التذاكر المتقدمة إلى أنظمة الطوابير والإدارة.",
+                hero_btn_order: "اطلب بوتك المخصص الآن",
+                hero_btn_work: "جرّب نماذج البوتات",
                 proj_eyebrow: "// معرض الأعمال",
                 proj_title: "أبرز أنظمة البوتات",
-                proj_desc: 'اضغط على <span class="text-white font-semibold">"تجربة تفاعلية"</span> في أي كارت لتشاهد شكل الأزرار والرسائل داخل الديسكورد.',
+                proj_desc: "اضغط على زر \"تجربة تفاعلية\" في أي بطاقة لتجربة شكل الرسائل والأزرار داخل الديسكورد.",
                 btn_demo: "تجربة تفاعلية",
-                p1_title: "نظام Nexus & Apex الشامل",
-                p1_desc: "بوت إدارة متكامل للسيرفرات يشمل نظام تذاكر متطور مع زر Claim/Unclaim تفاعلي، حفظ المحادثات بصيغة HTML، أوامر إدارة كاملة، وسجل أحداث مقسم.",
-                p1_f1: "نظام استلام التذاكر Claim / Unclaim للإدارة",
-                p1_f2: "حفظ سجلات التذاكر بصيغة HTML تلقائياً",
-                p1_f3: "أوامر باند، طرد، تايم أوت ولوق شامل",
-                p2_title: "بوت الطوابير والتقييم التنافسي (Tier-Testing)",
-                p2_desc: "نظام طوابير ومباريات بقاعدة بيانات SQLite مخصص لسيرفرات الألعاب التنافسية، يدعم ربط الحسابات وسحب اللاعبين للاختبار فوراً.",
-                p2_f1: "ربط الحسابات وحفظ البيانات في SQLite",
-                p2_f2: "واجهة طوابير تفاعلية بأيقونات مخصصة",
-                p2_f3: "أوامر سلاش سريعة /queue و /pull و /next",
-                p3_title: "بوت تذاكر الدعم متعدد الأقسام (Astral)",
-                p3_desc: "نظام دعم منظم يعتمد على القوائم المنسدلة والنوافذ المنبثقة (Modals) لجمع تفاصيل المشكلة قبل فتح التذكرة وتوجيهها للقسم المختص.",
-                p3_f1: "قوائم اختيار للأقسام (مبيعات، دعم فني، شكاوى)",
-                p3_f2: "نموذج بيانات قبل فتح التذكرة لتسريع الحل",
-                p3_f3: "إغلاق وتسمية وإضافة أعضاء بضغطة زر",
-                p4_title: "بوت المجتمع وتتبع الدعوات (Lexus)",
-                p4_desc: "مصمم للسيرفرات النشطة لتتبع الدعوات الحقيقية ومنح الرتب تلقائياً لأكثر الأعضاء دعوةً مع رسائل ترحيب مخصصة.",
-                p4_f1: "حساب دقيق للدعوات وكشف الحسابات الوهمية",
-                p4_f2: "قائمة متصدرين /invites ورتب تلقائية",
-                p4_f3: "رسائل ترحيب جذابة وردود تلقائية ذكية",
-                price_eyebrow: "// باقات واضحة",
-                price_title: "باقات برمجة البوتات",
-                price_desc: "أسعار مرنة تناسب حجم سيرفرك، وكل باقة تشمل الكود المصدري الكامل وشرح التشغيل.",
-                price_starting: "تبدأ من",
-                price_quote: "حسب الطلب",
-                badge_popular: "الأكثر طلباً",
-                t1_name: "باقة البداية (Starter)",
-                t1_desc: "مناسبة للسيرفرات الجديدة التي تحتاج أتمتة أساسية وأوامر سلاش نظيفة.",
-                t1_f1: "حتى 6 أوامر سلاش مخصصة",
-                t1_f2: "نظام ترحيب ورتب تلقائية عند الدخول",
-                t1_f3: "سجل أحداث أساسي للرسائل والأعضاء",
-                t1_f4: "تسليم سريع خلال يوم إلى يومين",
-                btn_select_pkg: "اختر باقة البداية",
-                t2_name: "نظام السيرفر الاحترافي (Pro)",
-                t2_desc: "إدارة متكاملة، أنظمة تذاكر متقدمة، وقاعدة بيانات لحفظ الإعدادات للسيرفرات النشطة.",
-                t2_f1: "نظام تذاكر متكامل (Claim + حفظ HTML)",
-                t2_f2: "حزمة إدارة كاملة ولوق مقسم لكل حدث",
-                t2_f3: "ربط قاعدة بيانات SQLite أو MongoDB",
-                t2_f4: "أزرار تفاعلية وقوائم اختيار ونوافذ Modals",
-                t2_f5: "دعم فني مجاني لمدة 7 أيام بعد التسليم",
-                btn_select_pro: "اطلب الباقة الاحترافية",
-                t3_name: "بوت مخصص / أنظمة ألعاب",
-                t3_desc: "أنظمة مصممة خصيصاً للكلانات، طوابير الاختبار، أنظمة النقاط، أو الربط مع APIs خارجية.",
-                t3_f1: "أنظمة طوابير ومباريات وتصنيف لاعبين",
-                t3_f2: "ربط مع مواقع أو واجهات برمجة الألعاب",
-                t3_f3: "تصميم قاعدة بيانات متكاملة حسب فكرتك",
-                t3_f4: "شرح كامل للتشغيل وتسليم الكود المصدري",
-                btn_select_custom: "اطلب تسعير مخصص",
-                w1_title: "كود نظيف وسهل التعديل",
-                w1_desc: "كود منظم مع ملف إعدادات واضح لتغيير التوكن والرتب والرومات في أي وقت بدون الحاجة لتعديل البرمجة.",
-                w2_title: "تجربة حية قبل الدفع النهائي",
-                w2_desc: "تجرب البوت بنفسك على سيرفر تجريبي للتأكد من عمل كل الأوامر والأزرار بدقة قبل التسليم النهائي.",
-                w3_title: "سرعة في التنفيذ ودعم مستمر",
-                w3_desc: "تواصل واضح خطوة بخطوة، التزام بموعد التسليم، وإصلاح مجاني لأي مشكلة تقنية تظهر بعد التسليم.",
-                ord_eyebrow: "// جاهز للبدء؟",
-                ord_title: "جهّز طلب البوت الخاص بك",
-                ord_desc: "اختر الباقة والمميزات المطلوبة وسيتم تجهيز رسالة طلب منسقة جاهزة للنسخ وإرسالها لي مباشرة على الديسكورد.",
-                lbl_pkg: "1. اختر الباقة / نوع البوت",
-                lbl_features: "2. المميزات المطلوبة",
-                lbl_notes: "3. تفاصيل إضافية أو فكرتك",
-                lbl_summary: "ملخص الطلب الجاهز",
-                btn_copy_order: "نسخ تفاصيل الطلب",
-                dm_label: "أرسل الطلب على ديسكورد:",
-                btn_copy_tag: "نسخ اليوزر"
+                price_eyebrow: "// أسعار واضحة",
+                price_title: "باقات تطوير البوتات",
+                price_desc: "أسعار مرنة تناسب احتياجات سيرفرك، وكل باقة تشمل الكود المصدري المنظم وشرح التشغيل.",
+                ord_eyebrow: "// جاهز نبدأ؟",
+                ord_title: "جهّز وابعت طلبك مباشرة",
+                ord_desc: "اكتب يوزر الديسكورد الخاص بك، اختار الباقة والمميزات، وابعت الطلب فوراً لسيرفري.",
+                lbl_discord: "يوزر الديسكورد الخاص بك *",
+                lbl_pkg: "اختر الباقة",
+                lbl_features: "المميزات المطلوبة",
+                lbl_notes: "تفاصيل البوت والأوامر اللي محتاجها",
+                sum_header: "ملخص الطلب المباشر",
+                btn_send_order: "إرسال الطلب مباشرة",
+                btn_copy_order: "نسخ الملخص (احتياطي)",
+                dm_direct: "أو تواصل معي مباشرة على الديسكورد:"
             }
         };
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
-            const html = document.documentElement;
-            html.setAttribute('lang', currentLang);
-            html.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
-            document.getElementById('lang-label').textContent = currentLang === 'en' ? 'العربية' : 'English';
+        const defaultEnglishText = {};
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+            defaultEnglishText[el.getAttribute("data-i18n")] = el.innerHTML;
+        });
 
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (TRANSLATIONS[currentLang][key]) {
-                    el.innerHTML = TRANSLATIONS[currentLang][key];
+        function toggleLanguage() {
+            currentLang = currentLang === "en" ? "ar" : "en";
+            const htmlEl = document.documentElement;
+            htmlEl.setAttribute("dir", currentLang === "ar" ? "rtl" : "ltr");
+            htmlEl.setAttribute("lang", currentLang);
+            document.getElementById("lang-label").textContent = currentLang === "ar" ? "English" : "العربية";
+
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                if (currentLang === "ar" && TRANSLATIONS.ar[key]) {
+                    el.innerHTML = TRANSLATIONS.ar[key];
+                } else if (defaultEnglishText[key]) {
+                    el.innerHTML = defaultEnglishText[key];
                 }
             });
         }
