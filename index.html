@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anas Dev | Custom Discord Bot Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '"Cairo"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        bgDark: '#0b0e14',
+                        cardDark: '#131722',
+                        cardHover: '#191f2e',
+                        blurple: '#5865F2',
+                        blurpleHover: '#4752C4',
+                        discordBg: '#313338',
+                        discordEmbed: '#2b2d31',
+                        discordBtn: '#4e5058',
+                        discordGreen: '#248046',
+                        discordRed: '#da373c',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0b0e14;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(88, 101, 242, 0.14) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        .glow-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .glow-card:hover {
+            border-color: rgba(88, 101, 242, 0.5);
+            box-shadow: 0 10px 35px -10px rgba(88, 101, 242, 0.25);
+            transform: translateY(-4px);
+        }
+        html[dir="rtl"] body {
+            font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-grid-pattern antialiased selection:bg-blurple selection:text-white">
+
+    <script>
+        const PORTFOLIO_CONFIG = {
+            developerName: "Anas",
+            brandName: "Anas.dev",
+            discordUsername: "_a7nx",
+            discordUserId: "1139228323633954916",
+            CLIENT_ID: "1574105122416361562",
+            REDIRECT_URI: "http://localhost:3000/auth/discord/callback",
+            API_BASE_URL: "http://localhost:3000",
+            pricing: {
+                starter: "$12",
+                pro: "$30",
+                custom: "$50+"
+            }
+        };
+    </script>
+
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-[#0b0e14]/85 border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div class="w-9 h-9 rounded-xl bg-blurple/20 border border-blurple/40 flex items-center justify-center text-blurple group-hover:bg-blurple group-hover:text-white transition-colors">
+                    <i class="fa-brands fa-discord text-lg"></i>
+                </div>
+                <span class="font-bold text-lg tracking-tight text-white" id="nav-brand">Anas<span class="text-blurple">.dev</span></span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-300">
+                <a href="#projects" class="hover:text-white transition-colors" data-i18n="nav_projects">Featured Bots</a>
+                <a href="#services" class="hover:text-white transition-colors" data-i18n="nav_services">Packages & Pricing</a>
+                <a href="#order" class="hover:text-white transition-colors" data-i18n="nav_order">Order Builder</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button id="lang-toggle" type="button" onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-gray-200 flex items-center gap-1.5 transition-all cursor-pointer">
+                    <i class="fa-solid fa-globe text-blurple"></i>
+                    <span id="lang-label">العربية</span>
+                </button>
+                <a href="#order" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blurple hover:bg-blurpleHover text-white text-sm font-semibold shadow-lg shadow-blurple/25 transition-all">
+                    <span data-i18n="nav_cta">Order a Bot</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative pt-16 pb-16 sm:pt-24 sm:pb-24 px-4 sm:px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-medium mb-6">
+                <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                <span data-i18n="hero_status">Available for Custom Bot Commissions</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-5" data-i18n="hero_title">
+                Custom Discord Bots Built with <span class="text-blurple">Node.js & Discord.js v14</span>
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto mb-8 text-sm sm:text-base" data-i18n="hero_subtitle">
+                Connect your Discord account, pick a package, and join the order server automatically when submitting.
+            </p>
+            <a href="#order" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-blurple hover:bg-blurpleHover text-white font-bold text-sm shadow-xl shadow-blurple/25 transition-all">
+                <i class="fa-solid fa-bolt"></i>
+                <span data-i18n="hero_btn_order">Order Your Custom Bot</span>
+            </a>
+        </div>
+    </section>
+
+    <section id="projects" class="py-12 px-4 sm:px-6 max-w-6xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-6" data-i18n="proj_title">Featured Bot Systems</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glow-card bg-cardDark rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-white mb-2">Tickets, Moderation & Logs Bot</h3>
+                <p class="text-gray-400 text-sm">Claim/unclaim tickets, transcripts, moderation commands, and categorized server logs.</p>
+            </div>
+            <div class="glow-card bg-cardDark rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-white mb-2">Queue & Tier-Testing Bot</h3>
+                <p class="text-gray-400 text-sm">SQLite-backed queue management with buttons, slash commands, and automated notifications.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-12 px-4 sm:px-6 max-w-6xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-6" data-i18n="price_title">Packages</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glow-card bg-cardDark rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <div class="text-sm text-gray-400 mb-1">Starter</div>
+                    <div class="text-3xl font-extrabold text-white mb-3" id="price-starter">$12</div>
+                    <p class="text-gray-400 text-sm mb-6">Basic slash commands, welcome system, and clean embeds.</p>
+                </div>
+                <button type="button" onclick="selectPackage('Starter Bot ($12)')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-sm font-semibold cursor-pointer">Select Starter</button>
+            </div>
+            <div class="glow-card bg-cardDark rounded-2xl p-6 border-2 border-blurple flex flex-col justify-between">
+                <div>
+                    <div class="text-sm text-blurple font-semibold mb-1">Pro System</div>
+                    <div class="text-3xl font-extrabold text-white mb-3" id="price-pro">$30</div>
+                    <p class="text-gray-300 text-sm mb-6">Tickets, moderation, database storage, and interactive buttons/modals.</p>
+                </div>
+                <button type="button" onclick="selectPackage('Pro Server System ($30)')" class="w-full py-2.5 rounded-xl bg-blurple hover:bg-blurpleHover text-white text-sm font-bold cursor-pointer">Select Pro</button>
+            </div>
+            <div class="glow-card bg-cardDark rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <div class="text-sm text-gray-400 mb-1">Custom Bot</div>
+                    <div class="text-3xl font-extrabold text-white mb-3" id="price-custom">$50+</div>
+                    <p class="text-gray-400 text-sm mb-6">Custom queues, APIs, or specialized workflows tailored to your server.</p>
+                </div>
+                <button type="button" onclick="selectPackage('Custom Bot ($50+)')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-sm font-semibold cursor-pointer">Select Custom</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="order" class="py-16 px-4 sm:px-6 max-w-5xl mx-auto">
+        <div class="bg-cardDark border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
+            <div class="text-center max-w-xl mx-auto mb-8">
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white mb-2" data-i18n="ord_title">Submit Your Bot Order</h2>
+                <p class="text-gray-400 text-sm" data-i18n="ord_desc">Connect Discord first so you join the order server automatically.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div class="lg:col-span-7 space-y-5">
+                    <div class="p-4 rounded-2xl bg-[#0b0e14] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div id="oauth-disconnected-view" class="flex items-center gap-3.5">
+                            <div class="w-11 h-11 rounded-xl bg-blurple/15 border border-blurple/30 flex items-center justify-center text-blurple text-xl">
+                                <i class="fa-brands fa-discord"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-white" data-i18n="oauth_title">Connect Discord Account</div>
+                                <div class="text-xs text-gray-400" data-i18n="oauth_desc">Required to join the order server automatically.</div>
+                            </div>
+                        </div>
+
+                        <div id="oauth-connected-view" class="hidden items-center gap-3.5">
+                            <img id="connected-avatar" src="" alt="Avatar" class="w-11 h-11 rounded-full border border-emerald-400/50 object-cover">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span id="connected-username" class="text-sm font-bold text-white font-mono"></span>
+                                    <span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[10px] font-bold">Connected</span>
+                                </div>
+                                <div id="connected-userid" class="text-[11px] text-gray-400 font-mono"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button id="connect-discord-btn" type="button" onclick="connectDiscordAccount()"
+                                class="px-4 py-2.5 rounded-xl bg-blurple hover:bg-blurpleHover text-white font-bold text-xs transition-all flex items-center gap-2 cursor-pointer">
+                                <i class="fa-brands fa-discord"></i>
+                                <span data-i18n="btn_connect_discord">Connect Discord</span>
+                            </button>
+                            <button id="disconnect-discord-btn" type="button" onclick="disconnectDiscordAccount()"
+                                class="hidden px-3 py-2.5 rounded-xl bg-white/5 hover:bg-rose-500/20 border border-white/10 text-gray-300 hover:text-rose-300 text-xs font-semibold transition-all cursor-pointer">
+                                <span data-i18n="btn_unlink">Unlink</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2" data-i18n="lbl_pkg">Select Package</label>
+                        <select id="order-package" onchange="updateOrderPreview()"
+                            class="w-full px-4 py-3 rounded-xl bg-[#0b0e14] border border-white/10 focus:border-blurple focus:outline-none text-white text-sm">
+                            <option value="Starter Bot ($12)">Starter Bot ($12)</option>
+                            <option value="Pro Server System ($30)" selected>Pro Server System ($30)</option>
+                            <option value="Custom Bot ($50+)">Custom Bot ($50+)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2" data-i18n="lbl_features">Features</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 cursor-pointer">
+                                <input type="checkbox" value="Ticket Panel + Transcripts" checked onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-cb">
+                                <span>Ticket Panel + Transcripts</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 cursor-pointer">
+                                <input type="checkbox" value="Moderation & Logs" onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-cb">
+                                <span>Moderation & Logs</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 cursor-pointer">
+                                <input type="checkbox" value="SQLite / MongoDB" onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-cb">
+                                <span>SQLite / MongoDB</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0b0e14] border border-white/10 cursor-pointer">
+                                <input type="checkbox" value="Custom Queue / Economy" onchange="updateOrderPreview()" class="accent-blurple w-4 h-4 feature-cb">
+                                <span>Custom Queue / Economy</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2" data-i18n="lbl_notes">Details</label>
+                        <textarea id="order-notes" rows="3" oninput="updateOrderPreview()" placeholder="Describe what you need..."
+                            class="w-full px-4 py-3 rounded-xl bg-[#0b0e14] border border-white/10 focus:border-blurple focus:outline-none text-white text-sm"></textarea>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-[#0b0e14] border border-white/10 rounded-2xl p-6 space-y-5">
+                    <pre id="order-preview-box" class="text-xs font-mono text-gray-300 whitespace-pre-wrap leading-relaxed bg-[#131722] p-4 rounded-xl border border-white/5"></pre>
+                    <div id="order-status" class="hidden p-3.5 rounded-xl text-xs font-semibold text-center"></div>
+                    <button id="submit-order-btn" type="button" onclick="sendOrderToBackend()"
+                        class="w-full py-3.5 px-5 rounded-xl bg-blurple hover:bg-blurpleHover text-white font-bold text-sm shadow-lg shadow-blurple/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span data-i18n="btn_send_order">Submit & Join Server</span>
+                    </button>
+                    <div class="text-center text-xs text-gray-400">
+                        <span>Developer:</span>
+                        <span id="footer-discord-tag" class="text-white font-mono font-bold ml-1">_a7nx</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-6 text-center text-xs text-gray-500 border-t border-white/5">
+        <span id="footer-brand">Anas.dev</span> — Built with Node.js & Discord.js v14
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "anas_discord_oauth_user";
+        let connectedUser = null;
+        let currentLang = "en";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("footer-discord-tag").textContent = PORTFOLIO_CONFIG.discordUsername;
+            document.getElementById("footer-brand").textContent = PORTFOLIO_CONFIG.brandName;
+            document.getElementById("price-starter").textContent = PORTFOLIO_CONFIG.pricing.starter;
+            document.getElementById("price-pro").textContent = PORTFOLIO_CONFIG.pricing.pro;
+            document.getElementById("price-custom").textContent = PORTFOLIO_CONFIG.pricing.custom;
+
+            loadConnectedUser();
+            renderOAuthState();
+            updateOrderPreview();
+        });
+
+        function loadConnectedUser() {
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get("user_id");
+            const username = params.get("username");
+            const avatar = params.get("avatar");
+
+            if (userId && username) {
+                connectedUser = {
+                    id: userId,
+                    username,
+                    avatar: avatar
+                        ? `https://cdn.discordapp.com/avatars/${userId}/${avatar}.png?size=128`
+                        : `https://cdn.discordapp.com/embed/avatars/${Number(BigInt(userId) >> 22n) % 6}.png`
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(connectedUser));
+                window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+                return;
+            }
+
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    connectedUser = JSON.parse(saved);
+                } catch {
+                    localStorage.removeItem(STORAGE_KEY);
+                }
+            }
+        }
+
+        function connectDiscordAccount() {
+            const scope = encodeURIComponent("identify guilds.join");
+            const redirectUri = encodeURIComponent(PORTFOLIO_CONFIG.REDIRECT_URI);
+            const url = `https://discord.com/oauth2/authorize?client_id=${PORTFOLIO_CONFIG.CLIENT_ID}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}`;
+            window.location.href = url;
+        }
+
+        function disconnectDiscordAccount() {
+            connectedUser = null;
+            localStorage.removeItem(STORAGE_KEY);
+            renderOAuthState();
+            updateOrderPreview();
+        }
+
+        function renderOAuthState() {
+            const discView = document.getElementById("oauth-disconnected-view");
+            const connView = document.getElementById("oauth-connected-view");
+            const connectBtn = document.getElementById("connect-discord-btn");
+            const unlinkBtn = document.getElementById("disconnect-discord-btn");
+
+            if (connectedUser?.id) {
+                discView.classList.add("hidden");
+                connView.classList.remove("hidden");
+                connView.classList.add("flex");
+                document.getElementById("connected-avatar").src = connectedUser.avatar;
+                document.getElementById("connected-username").textContent = connectedUser.username;
+                document.getElementById("connected-userid").textContent = `ID: ${connectedUser.id}`;
+                connectBtn.classList.add("hidden");
+                unlinkBtn.classList.remove("hidden");
+            } else {
+                discView.classList.remove("hidden");
+                connView.classList.add("hidden");
+                connView.classList.remove("flex");
+                connectBtn.classList.remove("hidden");
+                unlinkBtn.classList.add("hidden");
+            }
+        }
+
+        function selectPackage(pkgName) {
+            const selectEl = document.getElementById("order-package");
+            for (let i = 0; i < selectEl.options.length; i++) {
+                if (selectEl.options[i].value.includes(pkgName.split(" ")[0])) {
+                    selectEl.selectedIndex = i;
+                    break;
+                }
+            }
+            updateOrderPreview();
+            document.getElementById("order").scrollIntoView({ behavior: "smooth" });
+        }
+
+        function getOrderData() {
+            const pkg = document.getElementById("order-package").value;
+            const notes = document.getElementById("order-notes").value.trim() || "No extra notes.";
+            const features = Array.from(document.querySelectorAll(".feature-cb:checked")).map(cb => cb.value);
+            const priceMatch = pkg.match(/\(([^)]+)\)/);
+            const estimatedPrice = priceMatch ? priceMatch[1] : "Custom";
+            return { user: connectedUser, pkg, estimatedPrice, features, notes };
+        }
+
+        function updateOrderPreview() {
+            const { user, pkg, features, notes } = getOrderData();
+            const clientText = user ? `${user.username} (${user.id})` : "[Connect Discord Required]";
+            document.getElementById("order-preview-box").textContent =
+`👤 Client: ${clientText}
+📦 Package: ${pkg}
+⚙️ Features: ${features.length ? features.join(", ") : "Standard"}
+📝 Details: ${notes}`;
+        }
+
+        async function sendOrderToBackend() {
+            const { user, pkg, estimatedPrice, features, notes } = getOrderData();
+            const statusEl = document.getElementById("order-status");
+            const btn = document.getElementById("submit-order-btn");
+
+            if (!user?.id) {
+                statusEl.className = "p-3.5 rounded-xl text-xs font-semibold text-center bg-rose-500/15 border border-rose-500/30 text-rose-300";
+                statusEl.textContent = currentLang === "ar"
+                    ? "⚠️ اربط حسابك في ديسكورد أولاً!"
+                    : "⚠️ Please connect your Discord account first!";
+                statusEl.classList.remove("hidden");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.classList.add("opacity-60", "cursor-not-allowed");
+
+            try {
+                const res = await fetch(`${PORTFOLIO_CONFIG.API_BASE_URL}/api/orders`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        userId: user.id,
+                        username: user.username,
+                        package: pkg,
+                        estimatedPrice,
+                        features,
+                        notes
+                    })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(data.message || "Error");
+
+                statusEl.className = "p-3.5 rounded-xl text-xs font-semibold text-center bg-emerald-500/15 border border-emerald-500/30 text-emerald-300";
+                statusEl.textContent = currentLang === "ar"
+                    ? "✅ تم إرسال الطلب وإضافتك للسيرفر تلقائياً!"
+                    : "✅ Order submitted and joined the server automatically!";
+                statusEl.classList.remove("hidden");
+            } catch (err) {
+                statusEl.className = "p-3.5 rounded-xl text-xs font-semibold text-center bg-rose-500/15 border border-rose-500/30 text-rose-300";
+                statusEl.textContent = currentLang === "ar"
+                    ? `❌ فشل الإرسال: ${err.message}`
+                    : `❌ Failed to send: ${err.message}`;
+                statusEl.classList.remove("hidden");
+            } finally {
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.classList.remove("opacity-60", "cursor-not-allowed");
+                }, 4000);
+            }
+        }
+
+        const TRANSLATIONS = {
+            ar: {
+                nav_projects: "أعمالي",
+                nav_services: "الباقات",
+                nav_order: "اطلب بوت",
+                nav_cta: "اطلب الآن",
+                hero_status: "متاح لاستقبال طلبات البوتات",
+                hero_title: "تطوير بوتات ديسكورد بـ <span class='text-blurple'>Node.js & Discord.js v14</span>",
+                hero_subtitle: "اربط حساب ديسكورد، اختار باقتك، وهتدخل سيرفر الطلبات تلقائياً عند الإرسال.",
+                hero_btn_order: "اطلب بوتك الآن",
+                proj_title: "أبرز الأنظمة",
+                price_title: "الباقات",
+                ord_title: "إرسال طلب بوت",
+                ord_desc: "اربط حساب ديسكورد أولاً للدخول تلقائياً إلى سيرفر الطلبات.",
+                oauth_title: "ربط حساب ديسكورد",
+                oauth_desc: "مطلوب للدخول التلقائي إلى سيرفر الطلبات.",
+                btn_connect_discord: "ربط ديسكورد",
+                btn_unlink: "فصل",
+                lbl_pkg: "اختر الباقة",
+                lbl_features: "المميزات",
+                lbl_notes: "التفاصيل",
+                btn_send_order: "إرسال الطلب ودخول السيرفر"
+            }
+        };
+
+        const defaultEnglish = {};
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+            defaultEnglish[el.getAttribute("data-i18n")] = el.innerHTML;
+        });
+
+        function toggleLanguage() {
+            currentLang = currentLang === "en" ? "ar" : "en";
+            document.documentElement.setAttribute("dir", currentLang === "ar" ? "rtl" : "ltr");
+            document.documentElement.setAttribute("lang", currentLang);
+            document.getElementById("lang-label").textContent = currentLang === "ar" ? "English" : "العربية";
+
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                el.innerHTML = currentLang === "ar" && TRANSLATIONS.ar[key] ? TRANSLATIONS.ar[key] : defaultEnglish[key];
+            });
+        }
+    </script>
+</body>
+</html>
